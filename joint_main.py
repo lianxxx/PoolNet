@@ -2,14 +2,14 @@ import argparse
 import os
 from dataset.joint_dataset import get_loader
 from joint_solver import Solver
-
+os.environ['KMP_DUPLICATE_LIB_OK']='True'
 def get_test_info(sal_mode='e'):
     if sal_mode == 'e':
         image_root = './data/ECSSD/Imgs/'
         image_source = './data/ECSSD/test.lst'
     elif sal_mode == 'p':
-        image_root = './data/PASCALS/Imgs/'
-        image_source = './data/PASCALS/test.lst'
+        image_root = '/Users/lx/Desktop/dataset_test/PASCALS/Imgs/'
+        image_source = '/Users/lx/Desktop/dataset_test/PASCALS/test.lst'
     elif sal_mode == 'd':
         image_root = './data/DUTOMRON/Imgs/'
         image_source = './data/DUTOMRON/test.lst'
@@ -44,7 +44,8 @@ def main(config):
     elif config.mode == 'test':
         config.test_root, config.test_list = get_test_info(config.sal_mode)
         test_loader = get_loader(config, mode='test')
-        if not os.path.exists(config.test_fold): os.mkdir(config.test_fold)
+        if not os.path.exists(config.test_fold):
+            os.mkdir(config.test_fold)
         test = Solver(None, test_loader, config)
         test.test(test_mode=config.test_mode)
     else:
@@ -53,7 +54,7 @@ def main(config):
 if __name__ == '__main__':
 
     vgg_path = './dataset/pretrained/vgg16_20M.pth'
-    resnet_path = './dataset/pretrained/resnet50_caffe.pth'
+    resnet_path = '/Users/lx/Desktop/resnet50_caffe.pth'
 
     parser = argparse.ArgumentParser()
 

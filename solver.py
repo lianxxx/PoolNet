@@ -11,6 +11,7 @@ import os
 import torchvision.utils as vutils
 import cv2
 import math
+import logging
 import time
 
 
@@ -63,8 +64,10 @@ class Solver(object):
         mode_name = 'sal_fuse'
         time_s = time.time()
         img_num = len(self.test_loader)
+        logging.info(img_num)
         for i, data_batch in enumerate(self.test_loader):
             images, name, im_size = data_batch['image'], data_batch['name'][0], np.asarray(data_batch['size'])
+            logging.info(name)
             with torch.no_grad():
                 images = Variable(images)
                 if self.config.cuda:
@@ -74,8 +77,8 @@ class Solver(object):
                 multi_fuse = 255 * pred
                 cv2.imwrite(os.path.join(self.config.test_fold, name[:-4] + '_' + mode_name + '.png'), multi_fuse)
         time_e = time.time()
-        print('Speed: %f FPS' % (img_num/(time_e-time_s)))
-        print('Test Done!')
+        logging.info('Speed: %f FPS' % (img_num/(time_e-time_s)))
+        logging.info('Test Done!')
 
     # training phase
     def train(self):
